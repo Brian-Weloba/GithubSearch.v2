@@ -1,4 +1,4 @@
-import {NgModule} from '@angular/core';
+import {NgModule, isDevMode} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
 
 import {AppComponent} from './app.component';
@@ -9,6 +9,7 @@ import { ReposComponent } from './repos/repos.component';
 import {HttpClientModule} from "@angular/common/http";
 import { DateAgoPipe } from './pipes/date-ago.pipe';
 import {NgxPaginationModule} from 'ngx-pagination';
+import { ServiceWorkerModule } from '@angular/service-worker';
 
 @NgModule({
   declarations: [
@@ -23,7 +24,13 @@ import {NgxPaginationModule} from 'ngx-pagination';
   imports: [
     BrowserModule,
     HttpClientModule,
-    NgxPaginationModule
+    NgxPaginationModule,
+    ServiceWorkerModule.register('ngsw-worker.js', {
+      enabled: !isDevMode(),
+      // Register the ServiceWorker as soon as the application is stable
+      // or after 30 seconds (whichever comes first).
+      registrationStrategy: 'registerImmediately'
+    })
   ],
   providers: [],
   bootstrap: [AppComponent]
