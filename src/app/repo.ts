@@ -25,7 +25,8 @@ export class Repo {
     public parent: Parent,
     public url: any,
     public fork_owner: any,
-    public fork_name: any
+    public fork_name: any,
+    public html_url: any
   ) {
 
   }

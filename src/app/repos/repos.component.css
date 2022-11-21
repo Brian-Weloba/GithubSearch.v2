@@ -1,0 +1,29 @@
+
+
+::ng-deep .pagination-previous {
+  color: #58A6FD !important;
+}
+
+::ng-deep .pagination-previous a {
+  color: #58A6FD !important;
+}
+
+::ng-deep .ngx-pagination a {
+  color: #58A6FD !important;
+}
+
+::ng-deep .ngx-pagination li:hover {
+  background: none !important;
+  color: white !important;
+}
+
+::ng-deep .ngx-pagination a:hover {
+  background: none !important;
+  color: white !important;
+}
+
+::ng-deep .ngx-pagination .current:hover {
+  background: #58A6FD !important;
+  color: white !important;
+}
+

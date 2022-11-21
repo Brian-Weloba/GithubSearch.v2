@@ -10,6 +10,10 @@ import {firstValueFrom} from "rxjs";
 })
 export class ReposComponent implements OnInit {
   repos: Repo[] = [];
+  p: number = 1;
+  itemsPerPage: number = 8;
+  totalRepos: any;
+  autoHide:boolean = true;
 
   constructor(private http: HttpClient) {
 
@@ -21,13 +25,13 @@ export class ReposComponent implements OnInit {
 
   private searchRepos(username: string) {
     const fetchParent = (url: any, repo: Repo) => {
-     return new Promise<void>((resolve, reject) => {
+      return new Promise<void>((resolve, reject) => {
         firstValueFrom(this.http.get<any>(url)).then(
           (result) => {
             repo.fork_owner = result.parent.owner.login;
             repo.fork_name = result.parent.name;
-            console.log('repo :: ')
-            console.log(result.parent.owner.login)
+            // console.log('repo :: ')
+            // console.log(result.parent.owner.login)
             resolve();
           },
           (error) => {
@@ -42,6 +46,7 @@ export class ReposComponent implements OnInit {
       this.http.get<any>('https://api.github.com/users/' + username + '/repos').toPromise().then(
         (results) => {
           this.repos = results;
+          this.totalRepos = results.length;
           // this.repos.push(results);
           // console.log(this.repos);
           for (let i = 0; i < this.repos.length; i++) {

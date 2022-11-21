@@ -8,6 +8,7 @@ import { ProfileComponent } from './profile/profile.component';
 import { ReposComponent } from './repos/repos.component';
 import {HttpClientModule} from "@angular/common/http";
 import { DateAgoPipe } from './pipes/date-ago.pipe';
+import {NgxPaginationModule} from 'ngx-pagination';
 
 @NgModule({
   declarations: [
@@ -16,11 +17,13 @@ import { DateAgoPipe } from './pipes/date-ago.pipe';
     BodyComponent,
     ProfileComponent,
     ReposComponent,
-    DateAgoPipe
+    DateAgoPipe,
+
   ],
   imports: [
     BrowserModule,
-    HttpClientModule
+    HttpClientModule,
+    NgxPaginationModule
   ],
   providers: [],
   bootstrap: [AppComponent]

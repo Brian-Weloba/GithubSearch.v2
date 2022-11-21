@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {User} from "../user";
-import {HttpClient} from "@angular/common/http";
+import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {firstValueFrom} from "rxjs";
 
 @Component({
@@ -20,10 +20,14 @@ export class ProfileComponent implements OnInit{
   }
 
   searchUser(username:string) {
+    var header= {
+      headers : new HttpHeaders()
+        .set('Authorization', 'Bearer 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')
+    }
     return new Promise<void>((resolve, reject) => {
-      firstValueFrom(this.http.get<any>('https://api.github.com/users/' + username)).then(
+      firstValueFrom(this.http.get<any>('https://api.github.com/users/' + username,header)).then(
         (results: User) => {
-          console.log(results)
+          // console.log(results)
           this.user = results;
           resolve()
         },
