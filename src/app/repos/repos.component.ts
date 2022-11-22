@@ -1,7 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {Repo} from "../repo";
-import {HttpClient} from "@angular/common/http";
-import {firstValueFrom} from "rxjs";
+import {Subscription} from "rxjs";
+import {RepoService} from "../services/repo.service";
+import {DataService} from "../services/data.service";
 
 @Component({
   selector: 'app-repos',
@@ -13,55 +14,32 @@ export class ReposComponent implements OnInit {
   p: number = 1;
   itemsPerPage: number = 8;
   totalRepos: any;
-  autoHide:boolean = true;
+  autoHide: boolean = true;
+  subscription: Subscription | undefined;
 
-  constructor(private http: HttpClient) {
-
+  constructor(private repoService: RepoService, private data: DataService) {
   }
 
-  ngOnInit(): void {
-    this.searchRepos('brian-weloba');
+  ngOnInit() {
+    this.subscription = this.data.currentUsername.subscribe(username => this.searchRepos(username));
+  }
+
+  ngOnDestroy() {
+    // @ts-ignore
+    this.subscription.unsubscribe();
   }
 
   private searchRepos(username: string) {
-    const fetchParent = (url: any, repo: Repo) => {
-      return new Promise<void>((resolve, reject) => {
-        firstValueFrom(this.http.get<any>(url)).then(
-          (result) => {
-            repo.fork_owner = result.parent.owner.login;
-            repo.fork_name = result.parent.name;
-            // console.log('repo :: ')
-            // console.log(result.parent.owner.login)
-            resolve();
-          },
-          (error) => {
-            console.log(error);
-            reject();
-          }
-        )
-      });
-    }
+    this.repoService.searchRepos(username).then(
+      () => {
+        this.repos = this.repoService.repos;
+        this.totalRepos = this.repos.length;
+      },
+      (error) => {
+        console.log(error)
+      }
+    )
 
-    return new Promise<void>((resolve, reject) => {
-      this.http.get<any>('https://api.github.com/users/' + username + '/repos').toPromise().then(
-        (results) => {
-          this.repos = results;
-          this.totalRepos = results.length;
-          // this.repos.push(results);
-          // console.log(this.repos);
-          for (let i = 0; i < this.repos.length; i++) {
-            if (this.repos[i].fork) {
-              fetchParent(this.repos[i].url, this.repos[i]);
-            }
-          }
-          // console.log(this.repos);
-          resolve()
-        },
-        (error) => {
-          console.log(error);
-          reject();
-        }
-      )
-    });
   }
+
 }

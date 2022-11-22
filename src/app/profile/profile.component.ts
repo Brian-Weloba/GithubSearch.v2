@@ -1,42 +1,40 @@
 import {Component, OnInit} from '@angular/core';
 import {User} from "../user";
-import {HttpClient, HttpHeaders} from "@angular/common/http";
-import {firstValueFrom} from "rxjs";
+import {Subscription} from "rxjs";
+import {UserService} from "../services/user.service";
+import {DataService} from "../services/data.service";
 
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.css']
 })
-export class ProfileComponent implements OnInit{
+export class ProfileComponent implements OnInit {
   user: User;
+  subscription: Subscription | undefined;
 
-  constructor(private http:HttpClient) {
-    this.user = new User('','','','','','','','','','','','');
+  constructor(private userService: UserService, private data: DataService) {
+    this.user = new User('', '', '', '', '', '', '', '', '', '', '', '');
+
   }
 
-  ngOnInit():void {
-    this.searchUser('brian-weloba');
+  ngOnInit() {
+    this.subscription = this.data.currentUsername.subscribe(username => this.searchUser(username))
   }
 
-  searchUser(username:string) {
-    var header= {
-      headers : new HttpHeaders()
-        .set('Authorization', 'Bearer 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')
-    }
-    return new Promise<void>((resolve, reject) => {
-      firstValueFrom(this.http.get<any>('https://api.github.com/users/' + username,header)).then(
-        (results: User) => {
-          // console.log(results)
-          this.user = results;
-          resolve()
-        },
-        (error: any) => {
-          console.log(error);
-          reject();
-        }
-      )
-    });
+  ngOnDestroy() {
+    // @ts-ignore
+    this.subscription.unsubscribe();
   }
 
+  private searchUser(username: string) {
+    this.userService.searchUser(username).then(
+      () => {
+        this.user = this.userService.user;
+      },
+      (error) => {
+        console.log(error)
+      }
+    )
+  }
 }
