@@ -1,7 +1,8 @@
 <div *ngFor="let repo of repos | paginate: { itemsPerPage: itemsPerPage, currentPage: p ,totalItems: totalRepos}"
      class="text-text mx-5 py-5 border-b border-zinc-600 sm:border-gray">
-  <a href="{{repo.html_url}}" class="font-bold text-blue text-lg">{{repo.name}}<span
-    class="border border-gray rounded-full text-xs font-light text-text h-auto px-2 py-0.5 ml-2">Public</span></a>
+  <a href="{{repo.html_url}}" class="font-bold text-blue text-lg">{{repo.name}}
+    <span class="border border-gray rounded-full text-xs font-light text-text h-auto px-2 py-0.5 ml-2">Public</span>
+  </a>
   <p *ngIf="repo.fork" class="font-light text-xs">Forked from  {{repo.fork_owner}}/{{repo.fork_name}}</p>
   <p>{{repo.description}}</p>
   <br>
@@ -11,15 +12,21 @@
       {{repo.language}}
     </div>
     <div class="mr-7 flex">
-      <svg class="mr-1" aria-label="fork" role="img" height="16" viewBox="0 0 16 16" width="16"
-           data-view-component="true" fill="#B2BAC2">
+      <svg aria-label="fork"
+           class="mr-1"
+           data-view-component="true" fill="#B2BAC2"
+           height="16"
+           role="img"
+           viewBox="0 0 16 16"
+           width="16">
         <path fill-rule="evenodd"
               d="M5 3.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm0 2.122a2.25 2.25 0 10-1.5 0v.878A2.25 2.25 0 005.75 8.5h1.5v2.128a2.251 2.251 0 101.5 0V8.5h1.5a2.25 2.25 0 002.25-2.25v-.878a2.25 2.25 0 10-1.5 0v.878a.75.75 0 01-.75.75h-4.5A.75.75 0 015 6.25v-.878zm3.75 7.378a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm3-8.75a.75.75 0 100-1.5.75.75 0 000 1.5z"></path>
       </svg>
-      {{repo.forks_count}}</div>
+      {{repo.forks_count}}
+    </div>
     <div>Updated {{repo.updated_at | dateAgo}}</div>
   </div>
 </div>
 <div class="mt-8 py-5 flex justify-center items-center">
-  <pagination-controls class="my-pagination" (pageChange)="p = $event" ></pagination-controls>
+  <pagination-controls class="my-pagination" (pageChange)="p = $event"></pagination-controls>
 </div>

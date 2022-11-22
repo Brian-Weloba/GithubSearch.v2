@@ -1,2 +1,5 @@
-<input [formControl]="searchFormControl" type="search" class="bg-d-gray border-zinc-500 pl-1 rounded-md border text-text"
-       placeholder="@Username" name="username" [(ngModel)]="username" (keydown)='search($event)' >
+<input (keydown)='search($event)'
+       [(ngModel)]="username" [formControl]="searchFormControl"
+       class="bg-d-gray border-zinc-500 pl-1 rounded-md border text-text"
+       name="username" placeholder="@Username"
+       type="search">
